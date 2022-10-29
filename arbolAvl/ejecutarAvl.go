@@ -15,7 +15,6 @@ func main(){
 	fmt.Println("Insercion llave -> 8 Comparaciones -> " + strconv.Itoa(arbol.Insert(8)))
 	fmt.Println("Insercion llave -> 9 Comparaciones -> " + strconv.Itoa(arbol.Insert(9)))
 	fmt.Println("Insercion llave -> 6 Comparaciones -> " + strconv.Itoa(arbol.Insert(6)))
-	fmt.Println(arbol.Root)
 	fmt.Println(arbol.Find(2))
 	fmt.Println(arbol.Find(1))
 	fmt.Println(arbol.Find(29))
