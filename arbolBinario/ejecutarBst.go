@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"lenguajes/arbolBinario/modulos"
+	bst "lenguajes/arbolBinario/modulos"
 )
-func main(){
+
+func main() {
 	// Create instance of BinaryTree
-	BT_Root := &bst.BinaryTree{};
+	BT_Root := &bst.BinaryTree{}
 
 	// Insert elements
 	// fmt.Printf("\nComparisons made until %d was inserted: %d", 8, BT_Root.Insert(8));
@@ -19,23 +20,40 @@ func main(){
 	// fmt.Printf("\nComparisons made until %d was inserted: %d", 13, BT_Root.Insert(13));
 	// fmt.Printf("\nComparisons made until %d was inserted: %d", 7, BT_Root.Insert(7));
 
-	BT_Root.Insert(24);
-	BT_Root.Insert(20);
-	BT_Root.Insert(6);
-	BT_Root.Insert(5);
-	BT_Root.Insert(7);
-	BT_Root.Insert(8);
-	BT_Root.Insert(9);
-	BT_Root.Insert(29);
-	BT_Root.Insert(27);
-	BT_Root.Insert(33);
+	BT_Root.Insert(24)
+	BT_Root.Insert(20)
+	BT_Root.Insert(6)
+	BT_Root.Insert(5)
+	BT_Root.Insert(7)
+	BT_Root.Insert(8)
+	BT_Root.Insert(9)
+	BT_Root.Insert(29)
+	BT_Root.Insert(27)
+	BT_Root.Insert(33)
 
 	// Print inorder (Solo pa probar)
-	fmt.Println("\n\nKey\tValue\tL_Node\tR_Node");
-	BT_Root.Root.Print_Inorder();
+	fmt.Println("\n\nKey\tValue\tL_Node\tR_Node")
+	BT_Root.Root.Print_Inorder()
 
 	// Execute TreeToVine
-	BT_Root.DSW_Algorithm();
-	fmt.Println("\n\nKey\tValue\tL_Node\tR_Node");
-	BT_Root.Root.Print_Inorder();
+	BT_Root.DSW_Algorithm()
+	fmt.Println("\n\nKey\tValue\tL_Node\tR_Node")
+	BT_Root.Root.Print_Inorder()
+
+	// Test Find function with a key that exists
+	tupla := BT_Root.Find(27)
+	fmt.Print("Resultado de Find para Key = 27 : (")
+	fmt.Print(tupla.Found)
+	fmt.Print(",")
+	fmt.Print(tupla.Num_Comparison)
+	fmt.Print(")")
+	fmt.Println()
+
+	// Test Find function with a key that doesn't exist
+	tupla = BT_Root.Find(50)
+	fmt.Print("Resultado de Find para Key = 50 : (")
+	fmt.Print(tupla.Found)
+	fmt.Print(",")
+	fmt.Print(tupla.Num_Comparison)
+	fmt.Print(")")
 }
