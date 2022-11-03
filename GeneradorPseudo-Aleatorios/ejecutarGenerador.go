@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	// Generador struct = {semilla, n, x, limite}
+	gen := gen.Generador{Semilla: 11, N: 500, X: 2040, Limit: 500}
+
 	// n se utiliza para ir restando de 1 en 1 a la cantidad de numeros a generar y parar el trabajo cuando se llega a 0
 	// x será una constante
 
@@ -15,8 +16,6 @@ func main() {
 		el primer número, para así inicializar x con la semilla.
 		Se debe ingresar el mismo número para n y límite
 	*/
-
-	gen := gen.Generador{11, 500, 2040, 500}
 
 	// Cada vez que se hace Next se consigue el siguiente numero generado
 	for {
