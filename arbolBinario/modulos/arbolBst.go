@@ -1,6 +1,9 @@
 package bst
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // Struct: Node of a Binary Tree
 type BT_Node struct {
@@ -46,6 +49,59 @@ func insertNode(this **BT_Node, new_key int, num_Comparison *int) {
 	}
 }
 
+func (this *BinaryTree) DSW_Algorithm() {
+	var tempRoot *BT_Node = &BT_Node{ 0, 0, nil, this.Root};
+	var num_Nodes = TreeToVine(tempRoot);
+	
+	// VineToTree process -> Calls Compress
+	var h = int(math.Log2(float64(num_Nodes + 1)));
+	var m = int(math.Pow(2, float64(h)) - 1);
+
+	Compress(tempRoot, num_Nodes - m);
+
+	for m = m / 2; m > 0; m /= 2{
+		Compress(tempRoot, m)
+	}
+
+	this.Root = tempRoot.Right_node;
+}
+
+func TreeToVine(node *BT_Node) (num_Nodes int) {
+	var tail *BT_Node = node;
+	var rest *BT_Node = node.Right_node;
+	var temp *BT_Node;
+
+	for ; rest != nil; {
+		if (rest.Left_node == nil) {
+			tail = rest;
+			rest = rest.Right_node;
+			num_Nodes++;
+		} else {
+			temp = rest.Left_node;
+			rest.Left_node = temp.Right_node;
+			temp.Right_node = rest;
+			rest = temp;
+			tail.Right_node = temp;
+		}
+	}
+	return;
+}
+
+func Compress(root *BT_Node, count int) {
+	var temp *BT_Node = root.Right_node;
+	var oldTemp *BT_Node;
+
+	for i := 0; i < count; i++ {
+		oldTemp = temp;
+		temp = temp.Right_node;
+		root.Right_node = temp;
+		oldTemp.Right_node = temp.Left_node;
+		temp.Left_node = oldTemp;
+		root = temp;
+		temp = temp.Right_node;
+	}
+}
+
 // Test function: Show every value of every node in the tree
 func (this *BT_Node) Print_Inorder() {
 	if (this != nil) {
@@ -63,4 +119,4 @@ func (this *BT_Node) Print_Inorder() {
 		fmt.Printf("%v\t%v\t%v\t%v\n", this.Key, this.Counter, L_Value, R_Value);
 		this.Right_node.Print_Inorder();
 	}
-} 
+}
