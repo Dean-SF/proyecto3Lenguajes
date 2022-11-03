@@ -22,7 +22,7 @@ type Generador struct {
 	Semilla, N, X, Limit int
 }
 
-func (gen *Generador) Next() *int {
+func (gen *Generador) Next() int {
 	// --------- Validaciones ----------------
 	if gen.Limit < 500 || gen.Limit > 5000 {
 		error := "El limite y n deben ser un numero entero entre 500 y 5000"
@@ -44,7 +44,7 @@ func (gen *Generador) Next() *int {
 
 	// Si gen.N es igual a 0, significa que hemos generado todos los números
 	if gen.N == 0 {
-		return nil
+		return 0
 	}
 
 	/*
@@ -64,5 +64,5 @@ func (gen *Generador) Next() *int {
 	gen.X = result        // actualizar el valor de X
 
 	gen.N-- // Restarle 1 a N para indicar que hemos generado 1 número
-	return &result
+	return result
 }

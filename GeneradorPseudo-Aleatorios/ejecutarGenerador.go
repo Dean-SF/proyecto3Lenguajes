@@ -20,9 +20,9 @@ func main() {
 	// Cada vez que se hace Next se consigue el siguiente numero generado
 	for {
 		result := gen.Next()
-		if result == nil {
+		if result == 0 {
 			return
 		}
-		fmt.Printf("%v ", *result)
+		fmt.Printf("%v ", result)
 	}
 }
