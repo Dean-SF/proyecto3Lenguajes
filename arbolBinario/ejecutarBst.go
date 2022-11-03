@@ -40,20 +40,20 @@ func main() {
 	fmt.Println("\n\nKey\tValue\tL_Node\tR_Node")
 	BT_Root.Root.Print_Inorder()
 
-	// Test Find function with a key that exists
-	tupla := BT_Root.Find(27)
-	fmt.Print("Resultado de Find para Key = 27 : (")
-	fmt.Print(tupla.Found)
-	fmt.Print(",")
-	fmt.Print(tupla.Num_Comparison)
-	fmt.Print(")")
-	fmt.Println()
+	// // Test Find function with a key that exists
+	// tupla := BT_Root.Find(27)
+	// fmt.Print("Resultado de Find para Key = 27 : (")
+	// fmt.Print(tupla.Found)
+	// fmt.Print(",")
+	// fmt.Print(tupla.Num_Comparison)
+	// fmt.Print(")")
+	// fmt.Println()
 
-	// Test Find function with a key that doesn't exist
-	tupla = BT_Root.Find(50)
-	fmt.Print("Resultado de Find para Key = 50 : (")
-	fmt.Print(tupla.Found)
-	fmt.Print(",")
-	fmt.Print(tupla.Num_Comparison)
-	fmt.Print(")")
+	// // Test Find function with a key that doesn't exist
+	// tupla = BT_Root.Find(50)
+	// fmt.Print("Resultado de Find para Key = 50 : (")
+	// fmt.Print(tupla.Found)
+	// fmt.Print(",")
+	// fmt.Print(tupla.Num_Comparison)
+	// fmt.Print(")")
 }

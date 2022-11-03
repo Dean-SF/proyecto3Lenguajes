@@ -5,6 +5,10 @@ import (
 	"math"
 )
 
+// -------------------------------------------
+// --	Structure of a Binary Search Tree	--
+// -------------------------------------------
+
 // Struct: Node of a Binary Tree
 type BT_Node struct {
 	Key        int
@@ -18,10 +22,18 @@ type BinaryTree struct {
 	Root *BT_Node
 }
 
+// ---------------------------
+// --	Structure of Tuple	--
+// ---------------------------
+
 type Tuple struct {
 	Found          bool
 	Num_Comparison int
 }
+
+// -----------------------------------------------
+// --	Find Functions of a Binary Search Tree	--
+// -----------------------------------------------
 
 // Accesible function to search a given key and return the result and the amount of comparisons
 func (this *BinaryTree) Find(key int) (tuple *Tuple) {
@@ -63,6 +75,10 @@ func findAux(this **BT_Node, key int, tupla *Tuple) (tuple *Tuple) {
 	return
 }
 
+// ---------------------------------------------------
+// --	Insertion Functions of a Binary Search Tree	--
+// ---------------------------------------------------
+
 // Accesible function to insert element in the tree -> Return the number of comparison made
 func (this *BinaryTree) Insert(key int) (num_Comparison int) {
 	num_Comparison = 1
@@ -94,58 +110,9 @@ func insertNode(this **BT_Node, new_key int, num_Comparison *int) {
 	}
 }
 
-func (this *BinaryTree) DSW_Algorithm() {
-	var tempRoot *BT_Node = &BT_Node{0, 0, nil, this.Root}
-	var num_Nodes = TreeToVine(tempRoot)
-
-	// VineToTree process -> Calls Compress
-	var h = int(math.Log2(float64(num_Nodes + 1)))
-	var m = int(math.Pow(2, float64(h)) - 1)
-
-	Compress(tempRoot, num_Nodes-m)
-
-	for m = m / 2; m > 0; m /= 2 {
-		Compress(tempRoot, m)
-	}
-
-	this.Root = tempRoot.Right_node
-}
-
-func TreeToVine(node *BT_Node) (num_Nodes int) {
-	var tail *BT_Node = node
-	var rest *BT_Node = node.Right_node
-	var temp *BT_Node
-
-	for rest != nil {
-		if rest.Left_node == nil {
-			tail = rest
-			rest = rest.Right_node
-			num_Nodes++
-		} else {
-			temp = rest.Left_node
-			rest.Left_node = temp.Right_node
-			temp.Right_node = rest
-			rest = temp
-			tail.Right_node = temp
-		}
-	}
-	return
-}
-
-func Compress(root *BT_Node, count int) {
-	var temp *BT_Node = root.Right_node
-	var oldTemp *BT_Node
-
-	for i := 0; i < count; i++ {
-		oldTemp = temp
-		temp = temp.Right_node
-		root.Right_node = temp
-		oldTemp.Right_node = temp.Left_node
-		temp.Left_node = oldTemp
-		root = temp
-		temp = temp.Right_node
-	}
-}
+// -----------------------------------
+// --	Print a Binary Search Tree	--
+// -----------------------------------
 
 // Test function: Show every value of every node in the tree
 func (this *BT_Node) Print_Inorder() {
@@ -163,5 +130,84 @@ func (this *BT_Node) Print_Inorder() {
 		this.Left_node.Print_Inorder()
 		fmt.Printf("%v\t%v\t%v\t%v\n", this.Key, this.Counter, L_Value, R_Value)
 		this.Right_node.Print_Inorder()
+	}
+}
+
+// -------------------------------------------------------
+// --	Implementation of Day-Stout-Warren Algorithm	--
+// -------------------------------------------------------
+/*
+	Tomado de:
+	> Wikipedia(2022) Day–Stout–Warren algorithm [Pseudo code]: https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+	> jayshilbuddhadev-GeeksForGeeks(2022) Day-Stout-Warren algorithm to balance given Binary Search Tree [Source code]:
+		https://www.geeksforgeeks.org/day-stout-warren-algorithm-to-balance-given-binary-search-tree/
+*/
+
+// Execute the process of DSW algorithm
+func (this *BinaryTree) DSW_Algorithm() {
+	// Create a 'PseudoRoot' whose right child is the original root
+	var PsedoRoot *BT_Node = &BT_Node{ 0, 0, nil, this.Root};
+
+	// Make a Only-Right-Childs Tree (Linked list)
+	var num_Nodes = TreeToVine(PsedoRoot);
+
+	// Create a Complete Binary Tree (Route Balance BT) out of the pseudo root
+	VineToTree(PsedoRoot, num_Nodes);
+
+	// Make the right child of the pseudo root, the actual tree root
+	this.Root = PsedoRoot.Right_node;
+}
+
+// Apply right-rotations on the tree to make it a Linked List
+func TreeToVine(node *BT_Node) (num_Nodes int) {
+	var tail *BT_Node = node;
+	var rest *BT_Node = node.Right_node;
+	var temp *BT_Node;
+
+	for ; rest != nil; {
+		if (rest.Left_node == nil) {
+			tail = rest;
+			rest = rest.Right_node;
+			num_Nodes++;
+		} else {
+			temp = rest.Left_node;
+			rest.Left_node = temp.Right_node;
+			temp.Right_node = rest;
+			rest = temp;
+			tail.Right_node = temp;
+		}
+	}
+	return;
+}
+
+// Transform the linked list into a Balanced Binary Tree
+func VineToTree(node *BT_Node, num_Nodes int) {
+
+	// Get the max depth that a tree can have with n amount of nodes
+	var max_Depth = math.Trunc(math.Log2(float64(num_Nodes + 1)));
+
+	// Get the amount of leaves the tree will have after the first compression
+	var m = int(math.Pow(2, max_Depth) - 1);
+
+	Compress(node, num_Nodes - m);
+
+	for m = m / 2; m > 0; m /= 2{
+		Compress(node, m)
+	}
+}
+
+// Compress process: Make the odd nodes the left child of the even nodes
+func Compress(root *BT_Node, count int) {
+	var temp *BT_Node = root.Right_node;
+	var oldTemp *BT_Node;
+
+	for i := 0; i < count; i++ {
+		oldTemp = temp;
+		temp = temp.Right_node;
+		root.Right_node = temp;
+		oldTemp.Right_node = temp.Left_node;
+		temp.Left_node = oldTemp;
+		root = temp;
+		temp = temp.Right_node;
 	}
 }
