@@ -182,8 +182,11 @@ func TreeToVine(node *BT_Node) (num_Nodes int) {
 
 // Transform the linked list into a Balanced Binary Tree
 func VineToTree(node *BT_Node, num_Nodes int) {
-	
+
+	// Get the max depth that a tree can have with n amount of nodes
 	var max_Depth = math.Trunc(math.Log2(float64(num_Nodes + 1)));
+
+	// Get the amount of leaves the tree will have after the first compression
 	var m = int(math.Pow(2, max_Depth) - 1);
 
 	Compress(node, num_Nodes - m);
@@ -193,6 +196,7 @@ func VineToTree(node *BT_Node, num_Nodes int) {
 	}
 }
 
+// Compress process: Make the odd nodes the left child of the even nodes
 func Compress(root *BT_Node, count int) {
 	var temp *BT_Node = root.Right_node;
 	var oldTemp *BT_Node;
