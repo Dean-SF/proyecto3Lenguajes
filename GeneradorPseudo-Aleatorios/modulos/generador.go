@@ -55,12 +55,13 @@ func (gen *Generador) Next() *int {
 		gen.X = gen.Semilla
 	}
 
-	m := 256 // período
-	a := 109 // multiplicador
-	b := 853 // incremento
+	m := 2048 // período
+	a := 109  // multiplicador
+	b := 853  // incremento
 
 	result := (a*gen.X + b) % m
-	gen.X = result // actualizar el valor de X
+	result = result % 255 // Convertir al intervalo [0,255]
+	gen.X = result        // actualizar el valor de X
 
 	gen.N-- // Restarle 1 a N para indicar que hemos generado 1 número
 	return &result

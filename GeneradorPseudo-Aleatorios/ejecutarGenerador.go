@@ -16,7 +16,7 @@ func main() {
 		Se debe ingresar el mismo número para n y límite
 	*/
 
-	gen := gen.Generador{11, 600, 2040, 600}
+	gen := gen.Generador{11, 500, 2040, 500}
 
 	// Cada vez que se hace Next se consigue el siguiente numero generado
 	for {
