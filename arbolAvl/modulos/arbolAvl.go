@@ -5,6 +5,10 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+// -------------------------------
+// --	Structure of a AVL Tree	--
+// -------------------------------
+
 type BSTNoder interface {
 	String()
 }
@@ -17,11 +21,15 @@ type BSTNode[E constraints.Ordered] struct {
 
 }
 
+// -----------------------------------
+// --	Funtion for node printing	--
+// -----------------------------------
 func (this *BSTNode[E]) String() string {
 	return fmt.Sprintf("(%v, %d)", this.key, this.value)
 }
 
 type AVLTreer[E constraints.Ordered] interface {
+	weightedComparison(current *BSTNode[E], level int)
 	insertAux(current *BSTNode[E],key E,compares int)
 	rebalanceRight(current *BSTNode[E],compares int)
 	rebalanceLeft(current *BSTNode[E],compares int)
@@ -30,19 +38,29 @@ type AVLTreer[E constraints.Ordered] interface {
 	rotateLeft(current *BSTNode[E],compares int)	
 	height(current *BSTNode[E],compares int)
 	printInorderAux(current *BSTNode[E])
-	printInorder()
-	weightedComparison(current *BSTNode[E], level int)
+	numberNodes(current *BSTNode[E])
 	AvgWeightedComparison()
-	insert(key E)
-	find(key E)
-	
+	GetNumberNodes()
+	PrintInorder()
+	Insert(key E)
+	Find(key E)
+	GetHeight()
 	inorder()
+	
 }
 
 type AVLTree[E constraints.Ordered] struct {
 	Root *BSTNode[E]
 }
 
+// ----------------------------
+// --	AVL TREE FUNCTIONS	--
+// ----------------------------
+
+
+// -----------------------------------------------
+// --	Average Weighted Comparisons Functions	--
+// -----------------------------------------------
 func (this *AVLTree[E]) weightedComparison(current *BSTNode[E],level int) int {
 	if current == nil {
 		return 0
@@ -54,6 +72,9 @@ func (this *AVLTree[E]) AvgWeightedComparison() float32 {
 	return float32(this.weightedComparison(this.Root,1)) / float32(this.numberNodes(this.Root))
 }
 
+// -----------------------------------------------
+// --	Rotation Funtions for Tree balancing	--
+// -----------------------------------------------
 func (this *AVLTree[E]) rotateRight(current *BSTNode[E],compares int)(*BSTNode[E],int) {
 	compares += 1
 	if(current == nil) {
@@ -87,11 +108,9 @@ func (this *AVLTree[E]) rotateLeft(current *BSTNode[E],compares int)(*BSTNode[E]
 	temp.left = current
 	return temp,compares
 }
-
-func (this *AVLTree[E]) GetHeight() (int, int) {
-	return this.height(this.Root, 0);
-}
-
+// -----------------------------------------------
+// --	Function to return the number of nodes	--
+// -----------------------------------------------
 func (this *AVLTree[E]) GetNumberNodes() int {
 	return this.numberNodes(this.Root);
 }
@@ -101,6 +120,13 @@ func (this *AVLTree[E]) numberNodes(current *BSTNode[E]) int {
 		return 0;
 	}
 	return this.numberNodes(current.left) + this.numberNodes(current.right) + 1;
+}
+
+// -----------------------------------
+// --	Function to return Height	--
+// -----------------------------------
+func (this *AVLTree[E]) GetHeight() (int, int) {
+	return this.height(this.Root, 0);
 }
 
 func (this *AVLTree[E]) height(current *BSTNode[E],compares int) (int,int) {
@@ -118,6 +144,9 @@ func (this *AVLTree[E]) height(current *BSTNode[E],compares int) (int,int) {
 	}
 }
 
+// ---------------------------------------
+// --	Functions for rebalancing AVL	--
+// ---------------------------------------
 func (this *AVLTree[E]) rebalanceLeft(current *BSTNode[E],compares int)(*BSTNode[E],int){
 	var leftHeight,comparesLeft int = this.height(current.left,0)
 	var rightHeight,comparesRight int = this.height(current.right,0)
@@ -161,6 +190,9 @@ func (this *AVLTree[E]) rebalanceRight(current *BSTNode[E],compares int)(*BSTNod
 	return current,compares
 }
 
+// -------------------------------
+// --	Functions for insertion	--
+// -------------------------------
 func (this *AVLTree[E]) insertAux(current *BSTNode[E],key E,compares int)(*BSTNode[E],int){
 	compares += 1
 	if current == nil {
@@ -187,6 +219,15 @@ func (this *AVLTree[E]) insertAux(current *BSTNode[E],key E,compares int)(*BSTNo
 	}
 }
 
+func (this *AVLTree[E]) Insert(key E)int {
+	var compares int
+	this.Root,compares = (this.insertAux(this.Root,key,0))
+	return compares
+}
+
+// -------------------------------
+// --	Functions for finding	--
+// -------------------------------
 func (this *AVLTree[E]) findAux(current *BSTNode[E],key E, compares int)(bool,int) {
 	compares +=1
 	if current == nil {
@@ -204,16 +245,13 @@ func (this *AVLTree[E]) findAux(current *BSTNode[E],key E, compares int)(bool,in
 	}
 }
 
-func (this *AVLTree[E]) Insert(key E)int {
-	var compares int
-	this.Root,compares = (this.insertAux(this.Root,key,0))
-	return compares
-}
-
 func (this *AVLTree[E]) Find(key E) (bool,int) {
 	return this.findAux(this.Root,key,0)
 }
 
+// ---------------------------------------
+// --  Functions for printing in orden	--
+// ---------------------------------------
 func (this *AVLTree[E]) printInorderAux(current *BSTNode[E]) {
 	if current.left != nil {
 		this.printInorderAux(current.left)
