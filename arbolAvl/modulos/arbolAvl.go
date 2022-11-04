@@ -13,6 +13,7 @@ type BSTNode[E constraints.Ordered] struct {
 	left,right *BSTNode[E]
 	key E
 	value int
+	compares int
 
 }
 
@@ -30,6 +31,8 @@ type AVLTreer[E constraints.Ordered] interface {
 	height(current *BSTNode[E],compares int)
 	printInorderAux(current *BSTNode[E])
 	printInorder()
+	weightedComparison(current *BSTNode[E], level int)
+	AvgWeightedComparison()
 	insert(key E)
 	find(key E)
 	
@@ -40,15 +43,28 @@ type AVLTree[E constraints.Ordered] struct {
 	Root *BSTNode[E]
 }
 
+func (this *AVLTree[E]) weightedComparison(current *BSTNode[E],level int) int {
+	if current == nil {
+		return 0
+	}
+	return this.weightedComparison(current.left, level+1) + this.weightedComparison(current.right, level+1) + (current.compares * level)
+}
+
+func (this *AVLTree[E]) AvgWeightedComparison() float32 {
+	return float32(this.weightedComparison(this.Root,1)) / float32(this.numberNodes(this.Root))
+}
+
 func (this *AVLTree[E]) rotateRight(current *BSTNode[E],compares int)(*BSTNode[E],int) {
 	compares += 1
 	if(current == nil) {
 		panic("Can't rotate right on null.")
 	} 
 	compares += 1
+	current.compares += 1
 	if(current.left == nil) {
 		panic("Can't rotate right with null left child.")
 	}
+	current.compares += 1
 	var temp *BSTNode[E] = current.left
 	current.left = temp.right
 	temp.right = current
@@ -61,9 +77,11 @@ func (this *AVLTree[E]) rotateLeft(current *BSTNode[E],compares int)(*BSTNode[E]
 		panic("Can't rotate left on null.")
 	} 
 	compares += 1
+	current.compares += 1
 	if(current.right == nil) {
 		panic("Can't rotate left with null right child.")
 	}
+	current.compares += 1
 	var temp *BSTNode[E] = current.right
 	current.right = temp.left
 	temp.left = current
@@ -103,12 +121,14 @@ func (this *AVLTree[E]) height(current *BSTNode[E],compares int) (int,int) {
 func (this *AVLTree[E]) rebalanceLeft(current *BSTNode[E],compares int)(*BSTNode[E],int){
 	var leftHeight,comparesLeft int = this.height(current.left,0)
 	var rightHeight,comparesRight int = this.height(current.right,0)
-
+	
+	current.compares += 1
 	compares += (1 + comparesLeft + comparesRight)
 	if(leftHeight - rightHeight > 1) {
 		var leftLeftHeight,comparesLeft int = this.height(current.left.left,0)
 		var leftRightHeight,comparesRight int = this.height(current.left.right,0)
 		compares += (1 + comparesLeft + comparesRight)
+		current.compares += 1
 		if(leftLeftHeight >= leftRightHeight) {
 			return this.rotateRight(current,compares);
 		} else {
@@ -124,10 +144,12 @@ func (this *AVLTree[E]) rebalanceRight(current *BSTNode[E],compares int)(*BSTNod
 	var leftHeight,comparesLeft int = this.height(current.left,0)
 	var rightHeight,comparesRight int = this.height(current.right,0)
 	compares += (1 + comparesLeft + comparesRight)
+	current.compares += 1
 	if(rightHeight - leftHeight > 1) {
 		var rightRightHeight,comparesLeft int = this.height(current.right.right,0)
 		var rightLeftHeight,comparesRight int = this.height(current.right.left,0)
 		compares += (1 + comparesLeft + comparesRight)
+		current.compares += 1
 		if(rightRightHeight >= rightLeftHeight) {
 			return this.rotateLeft(current,compares)
 		} else {
@@ -142,14 +164,16 @@ func (this *AVLTree[E]) rebalanceRight(current *BSTNode[E],compares int)(*BSTNod
 func (this *AVLTree[E]) insertAux(current *BSTNode[E],key E,compares int)(*BSTNode[E],int){
 	compares += 1
 	if current == nil {
-		return &BSTNode[E]{left: nil,right: nil,key: key, value: 0},compares
+		return &BSTNode[E]{left: nil,right: nil,key: key, value: 0,compares: 1},compares
 	}
 	compares += 1
+	current.compares += 2
 	if key == current.key {
 		current.value += 1
 		return current,compares
 	}
 	compares += 1
+	current.compares += 1
 	if key < current.key {
 		var comparesLeft int
 		current.left,comparesLeft = this.insertAux(current.left,key,0)
