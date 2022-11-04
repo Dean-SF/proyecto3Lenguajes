@@ -111,6 +111,44 @@ func insertNode(this **BT_Node, new_key int, num_Comparison *int) {
 }
 
 // -----------------------------------
+// --	Height Binary Search Tree	--
+// -----------------------------------
+
+func (this *BinaryTree) GetHeight() int {
+	return this.Root.height();
+}
+
+func (this *BT_Node) height() int {
+	if (this == nil) {
+		return 0;
+	}
+
+	var H_Left int = this.Left_node.height() + 1;
+	var H_Right int = this.Right_node.height() + 1;
+
+	if (H_Left > H_Right) {
+		return H_Left;
+	} else {
+		return H_Right;
+	}
+}
+
+// ---------------------------------------------------
+// --	Number of nodes of a  Binary Search Tree	--
+// ---------------------------------------------------
+
+func (this *BinaryTree) GetNumberNodes() int {
+	return this.Root.numberNodes();
+}
+
+func (this *BT_Node) numberNodes() int {
+	if (this == nil) {
+		return 0;
+	}
+	return this.Left_node.numberNodes() + this.Right_node.numberNodes() + 1;
+}
+
+// -----------------------------------
 // --	Print a Binary Search Tree	--
 // -----------------------------------
 

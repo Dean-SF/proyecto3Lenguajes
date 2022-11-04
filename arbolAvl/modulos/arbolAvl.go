@@ -70,6 +70,21 @@ func (this *AVLTree[E]) rotateLeft(current *BSTNode[E],compares int)(*BSTNode[E]
 	return temp,compares
 }
 
+func (this *AVLTree[E]) GetHeight() (int, int) {
+	return this.height(this.Root, 0);
+}
+
+func (this *AVLTree[E]) GetNumberNodes() int {
+	return this.numberNodes(this.Root);
+}
+
+func (this *AVLTree[E]) numberNodes(current *BSTNode[E]) int {
+	if (current == nil) {
+		return 0;
+	}
+	return this.numberNodes(current.left) + this.numberNodes(current.right) + 1;
+}
+
 func (this *AVLTree[E]) height(current *BSTNode[E],compares int) (int,int) {
 	compares += 1
 	if(current == nil) {

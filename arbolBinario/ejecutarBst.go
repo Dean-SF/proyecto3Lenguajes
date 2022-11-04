@@ -21,19 +21,24 @@ func main() {
 	// fmt.Printf("\nComparisons made until %d was inserted: %d", 7, BT_Root.Insert(7));
 
 	BT_Root.Insert(24)
-	BT_Root.Insert(20)
-	BT_Root.Insert(6)
-	BT_Root.Insert(5)
-	BT_Root.Insert(7)
 	BT_Root.Insert(8)
-	BT_Root.Insert(9)
 	BT_Root.Insert(29)
 	BT_Root.Insert(27)
 	BT_Root.Insert(33)
+	BT_Root.Insert(6)
+	BT_Root.Insert(20)
+	BT_Root.Insert(5)
+	BT_Root.Insert(7)
+	BT_Root.Insert(9)
+	BT_Root.Insert(3)
+	BT_Root.Insert(2)
 
 	// Print inorder (Solo pa probar)
 	fmt.Println("\n\nKey\tValue\tL_Node\tR_Node")
 	BT_Root.Root.Print_Inorder()
+
+	fmt.Printf("\nAltura: %v\n", BT_Root.GetHeight());
+	fmt.Printf("\nNodos: %v\n", BT_Root.GetNumberNodes());
 
 	// Execute TreeToVine
 	BT_Root.DSW_Algorithm()

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"math"
 	bst "lenguajes/arbolBinario/modulos"
 	gen "lenguajes/GeneradorPseudo-Aleatorios/modulos"
 	avl "lenguajes/arbolAvl/modulos"
@@ -36,6 +37,8 @@ func experimento(tamannio int, semilla int) {
 		ArbolBSTComp += ArbolBST.Insert(numeros[i])
 		ArbolDSWComp += ArbolDSW.Insert(numeros[i])
 	}
+
+	ArbolDSW.DSW_Algorithm()
 	
 	generador = gen.Generador{Semilla: semilla, N: 3001, X: 2040, Limit: 3001}
 	for i,j := 0,0; i < 100000; i,j = i+1,j+1 {
@@ -52,25 +55,35 @@ func experimento(tamannio int, semilla int) {
 		ArbolBSTFind += BSTFResult.Num_Comparison
 		ArbolDSWFind += DSWFResult.Num_Comparison
 		
-	}	
-	fmt.Println(ArbolAVLComp)
-	fmt.Println(ArbolBSTComp)
-	fmt.Println(ArbolDSWComp)
-	
-	fmt.Println()
+	}
 
-	fmt.Println(ArbolAVLFind)
-	fmt.Println(ArbolBSTFind)
-	fmt.Println(ArbolDSWFind)
+	heightAVL, _ := ArbolAVL.GetHeight();
 
-	fmt.Println()
+	fmt.Printf("\nAltura AVL: %v", heightAVL);
+	fmt.Printf("\nAltura ABB: %v", ArbolBST.GetHeight());
+	fmt.Printf("\nAltura DSW: %v\n", ArbolDSW.GetHeight());
 
+	fmt.Printf("\nProfundidad AVL: %f", math.Log2(float64(ArbolAVL.GetNumberNodes())));
+	fmt.Printf("\nProfundidad ABB: %f", math.Log2(float64(ArbolBST.GetNumberNodes())));
+	fmt.Printf("\nProfundidad DSW: %f\n", math.Log2(float64(ArbolDSW.GetNumberNodes())));
+
+	fmt.Printf("\nDensidad AVL: %v", (ArbolAVL.GetNumberNodes() / heightAVL));
+	fmt.Printf("\nDensidad ABB: %v", (ArbolBST.GetNumberNodes() / ArbolBST.GetHeight()));
+	fmt.Printf("\nDensidad DSW: %v\n", (ArbolDSW.GetNumberNodes() / ArbolDSW.GetHeight()));
+
+	fmt.Printf("\nComparaciones AVL(insercion): %v", ArbolAVLComp)
+	fmt.Printf("\nComparaciones BST(insercion): %v", ArbolBSTComp)
+	fmt.Printf("\nComparaciones DSW(insercion): %v\n", ArbolDSWComp)
+
+	fmt.Printf("\nComparaciones AVL(find): %v", ArbolAVLFind)
+	fmt.Printf("\nComparaciones BST(find): %v", ArbolBSTFind)
+	fmt.Printf("\nComparaciones DSW(find): %v\n", ArbolDSWFind)
 }
 
 func main() {
 	var tamannio = [5]int{500,1000,2000,3500,5000}
 	for i, value := range tamannio {
-		fmt.Println("Experimento #" + strconv.Itoa(i+1))
+		fmt.Println("\n\n >>>> Experimento #" + strconv.Itoa(i+1))
 		experimento(value,NUMEROS_PRIMOS[value%42])
 	}
 }
