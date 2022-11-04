@@ -13,6 +13,7 @@ import (
 type BT_Node struct {
 	Key        int
 	Counter    int
+	Compares   int
 	Left_node  *BT_Node
 	Right_node *BT_Node
 }
@@ -75,6 +76,22 @@ func findAux(this **BT_Node, key int, tupla *Tuple) (tuple *Tuple) {
 	return
 }
 
+// -----------------------------------------------
+// --	Average Weighted Comparisons Function	--
+// -----------------------------------------------
+
+func (this *BinaryTree) weightedComparison(current *BT_Node, level int) int {
+	if current == nil {
+		return 0
+	}
+	return this.weightedComparison(current.Left_node,level + 1) + this.weightedComparison(current.Right_node,level + 1) + (current.Compares * level) 
+}
+
+func (this *BinaryTree) AvgWeightedComparison() float32 {
+	return float32(this.weightedComparison(this.Root,1)) / float32(this.Root.numberNodes())
+}
+
+
 // ---------------------------------------------------
 // --	Insertion Functions of a Binary Search Tree	--
 // ---------------------------------------------------
@@ -83,7 +100,7 @@ func findAux(this **BT_Node, key int, tupla *Tuple) (tuple *Tuple) {
 func (this *BinaryTree) Insert(key int) (num_Comparison int) {
 	num_Comparison = 1
 	if this.Root == nil {
-		this.Root = &BT_Node{key, 1, nil, nil}
+		this.Root = &BT_Node{key, 1, 1, nil, nil}
 	} else {
 		insertNode(&this.Root, key, &num_Comparison)
 	}
@@ -94,18 +111,21 @@ func (this *BinaryTree) Insert(key int) (num_Comparison int) {
 func insertNode(this **BT_Node, new_key int, num_Comparison *int) {
 	if (*this) == nil {
 		(*num_Comparison) += 1
-		*this = &BT_Node{new_key, 1, nil, nil}
+		*this = &BT_Node{new_key,1, 1, nil, nil}
 
 	} else if new_key == (*this).Key {
 		(*num_Comparison) += 2
+		(*this).Compares += 2
 		(*this).Counter++
 
 	} else if new_key < (*this).Key {
 		(*num_Comparison) += 3
+		(*this).Compares += 2
 		insertNode(&((*this).Left_node), new_key, num_Comparison)
 
 	} else {
 		(*num_Comparison) += 3
+		(*this).Compares += 2
 		insertNode(&((*this).Right_node), new_key, num_Comparison)
 	}
 }
@@ -184,7 +204,7 @@ func (this *BT_Node) Print_Inorder() {
 // Execute the process of DSW algorithm
 func (this *BinaryTree) DSW_Algorithm() {
 	// Create a 'PseudoRoot' whose right child is the original root
-	var PsedoRoot *BT_Node = &BT_Node{ 0, 0, nil, this.Root};
+	var PsedoRoot *BT_Node = &BT_Node{ 0, 0, 0, nil, this.Root};
 
 	// Make a Only-Right-Childs Tree (Linked list)
 	var num_Nodes = TreeToVine(PsedoRoot);

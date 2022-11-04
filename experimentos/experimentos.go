@@ -78,6 +78,10 @@ func experimento(tamannio int, semilla int) {
 	fmt.Printf("\nComparaciones AVL(find): %v", ArbolAVLFind)
 	fmt.Printf("\nComparaciones BST(find): %v", ArbolBSTFind)
 	fmt.Printf("\nComparaciones DSW(find): %v\n", ArbolDSWFind)
+
+	fmt.Printf("\nComparaciones Promedio de Insercion Ponderadas AVL: %v", ArbolAVL.AvgWeightedComparison())
+	fmt.Printf("\nComparaciones Promedio de Insercion Ponderadas BST: %v", ArbolBST.AvgWeightedComparison())
+	fmt.Printf("\nComparaciones Promedio de Insercion Ponderadas DSW: %v", ArbolDSW.AvgWeightedComparison())
 }
 
 func main() {
