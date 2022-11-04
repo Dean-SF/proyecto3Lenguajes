@@ -18,11 +18,11 @@ func EsPrimo(num int) bool {
 	return true
 }
 
-type Generador struct {
+type GeneradorParametros struct {
 	Semilla, N, X, Limit int
 }
 
-func (gen *Generador) Next() int {
+func (gen *GeneradorParametros) Generador() int {
 	// --------- Validaciones ----------------
 	if gen.Limit < 500 || gen.Limit > 5000 {
 		error := "El limite y n deben ser un numero entero entre 500 y 5000"
@@ -59,8 +59,8 @@ func (gen *Generador) Next() int {
 	a := 109  // multiplicador
 	b := 853  // incremento
 
-	result := (a*gen.X + b) % m 
-	gen.X = result        // actualizar el valor de X 
+	result := (a*gen.X + b) % m
+	gen.X = result        // actualizar el valor de X
 	result = result % 255 // Convertir al intervalo [0,255]
 
 	gen.N-- // Restarle 1 a N para indicar que hemos generado 1 número

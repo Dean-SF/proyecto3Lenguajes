@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	gen := gen.Generador{Semilla: 11, N: 500, X: 2040, Limit: 500}
+	gen := gen.GeneradorParametros{Semilla: 11, N: 500, X: 2040, Limit: 500}
 
 	// n se utiliza para ir restando de 1 en 1 a la cantidad de numeros a generar y parar el trabajo cuando se llega a 0
 	// x será una constante
@@ -19,7 +19,7 @@ func main() {
 
 	// Cada vez que se hace Next se consigue el siguiente numero generado
 	for {
-		result := gen.Next()
+		result := gen.Generador()
 		if result == 0 {
 			return
 		}
