@@ -18,6 +18,17 @@ func EsPrimo(num int) bool {
 	return true
 }
 
+/*
+N se utiliza para ir restando de 1 en 1 a la cantidad de numeros a generar
+y parar el trabajo cuando se llega a 0.
+
+X será una constante del parámetro x para la fórmula, después del primer número
+generado va a almacenar el número generado anteriormente.
+
+Limite es una constante con la cantidad de numeros a generar, se utiliza para identificar cuándo
+se está por generar el primer número, para así inicializar x con la semilla.
+Se debe ingresar el mismo número para n y límite.
+*/
 type GeneradorParametros struct {
 	Semilla, N, X, Limit int
 }
