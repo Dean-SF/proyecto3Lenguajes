@@ -11,7 +11,7 @@ func main() {
 	// Cada vez que se llama al método se consigue el siguiente numero generado
 	for {
 		result := gen.Generador()
-		if result == 0 {
+		if gen.N == 0 {
 			return
 		}
 		fmt.Printf("%v ", result)
