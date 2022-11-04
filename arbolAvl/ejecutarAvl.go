@@ -1,7 +1,7 @@
 package main
 
 import (
-	"lenguajes/arbolAvl/modulos"
+	avl "lenguajes/arbolAvl/modulos"
 	"fmt"
 	"strconv"
 )
