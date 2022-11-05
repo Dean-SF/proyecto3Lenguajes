@@ -73,6 +73,20 @@ func (this *AVLTree[E]) AvgWeightedComparison() float32 {
 }
 
 // -----------------------------------------------
+// --	Function to return the number of nodes	--
+// -----------------------------------------------
+func (this *AVLTree[E]) GetNumberNodes() int {
+	return this.numberNodes(this.Root);
+}
+
+func (this *AVLTree[E]) numberNodes(current *BSTNode[E]) int {
+	if (current == nil) {
+		return 0;
+	}
+	return this.numberNodes(current.left) + this.numberNodes(current.right) + 1;
+}
+
+// -----------------------------------------------
 // --	Rotation Funtions for Tree balancing	--
 // -----------------------------------------------
 func (this *AVLTree[E]) rotateRight(current *BSTNode[E],compares int)(*BSTNode[E],int) {
@@ -107,19 +121,6 @@ func (this *AVLTree[E]) rotateLeft(current *BSTNode[E],compares int)(*BSTNode[E]
 	current.right = temp.left
 	temp.left = current
 	return temp,compares
-}
-// -----------------------------------------------
-// --	Function to return the number of nodes	--
-// -----------------------------------------------
-func (this *AVLTree[E]) GetNumberNodes() int {
-	return this.numberNodes(this.Root);
-}
-
-func (this *AVLTree[E]) numberNodes(current *BSTNode[E]) int {
-	if (current == nil) {
-		return 0;
-	}
-	return this.numberNodes(current.left) + this.numberNodes(current.right) + 1;
 }
 
 // -----------------------------------
