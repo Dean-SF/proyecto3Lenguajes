@@ -67,9 +67,9 @@ func experimento(tamannio int, semilla int) {
 	fmt.Printf("\nProfundidad ABB: %f", math.Log2(float64(ArbolBST.GetNumberNodes())))
 	fmt.Printf("\nProfundidad DSW: %f\n", math.Log2(float64(ArbolDSW.GetNumberNodes())))
 
-	fmt.Printf("\nDensidad AVL: %v", (ArbolAVL.GetNumberNodes() / heightAVL))
-	fmt.Printf("\nDensidad ABB: %v", (ArbolBST.GetNumberNodes() / ArbolBST.GetHeight()))
-	fmt.Printf("\nDensidad DSW: %v\n", (ArbolDSW.GetNumberNodes() / ArbolDSW.GetHeight()))
+	fmt.Printf("\nDensidad AVL: %v", (float32(ArbolAVL.GetNumberNodes()) / float32(heightAVL)))
+	fmt.Printf("\nDensidad ABB: %v", (float32(ArbolBST.GetNumberNodes()) / float32(ArbolBST.GetHeight())))
+	fmt.Printf("\nDensidad DSW: %v\n", (float32(ArbolDSW.GetNumberNodes()) / float32(ArbolDSW.GetHeight())))
 
 	fmt.Printf("\nComparaciones AVL(insercion): %v", ArbolAVLComp)
 	fmt.Printf("\nComparaciones BST(insercion): %v", ArbolBSTComp)
@@ -86,6 +86,7 @@ func experimento(tamannio int, semilla int) {
 
 func main() {
 	var tamannio = [5]int{500, 1000, 2000, 3500, 5000}
+	// seeds 191,167,127,67,17
 	for i, value := range tamannio {
 		fmt.Println("\n\n >>>> Experimento #" + strconv.Itoa(i+1))
 		experimento(value, NUMEROS_PRIMOS[value%42])
